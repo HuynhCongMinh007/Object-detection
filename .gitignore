@@ -1,0 +1,8 @@
+ssd_model/animal_dataset/
+ssd_model/dataset/
+ssd_model/.venv/
+ssd_model/checkpoints/
+ssd_model/__pycache__/
+ssd_model/*.pth
+ssd_model/*.pt
+ssd_model/*.onnx
