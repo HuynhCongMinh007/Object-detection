@@ -8,7 +8,6 @@ from ultralytics import YOLO
 MODEL_PATH = './checkpoints/best.pt'
 CONFIDENCE_THRESHOLD = 0.5
 
-# LƯU Ý: Thứ tự class phải khớp hoàn toàn với file data.yaml của bạn
 CLASS_NAMES = ['cat', 'chicken', 'cow', 'dog', 'horse', 'sheep']
 
 def load_model(model_path=MODEL_PATH):
@@ -22,11 +21,9 @@ def run_inference(model, image_path, conf_threshold=CONFIDENCE_THRESHOLD):
     """
     print(f">>> Đang xử lý ảnh: {image_path}")
     
-    # YOLO dự đoán (không tự động lưu ảnh để tiện xuất API)
     results = model.predict(source=image_path, conf=conf_threshold, save=False)
     result = results[0] 
-    
-    # Khởi tạo format đầu ra chuẩn của nhóm
+
     output = {
         'detections': [],
         'image_size': [result.orig_shape[0], result.orig_shape[1]], # [height, width]
@@ -52,7 +49,7 @@ def run_inference(model, image_path, conf_threshold=CONFIDENCE_THRESHOLD):
     # Lưu annotated image (với bounding box)
     output['annotated_image_path'] = None
     if result.plot() is not None:
-        output['annotated_image_path'] = str(image_path)  # Sẽ được xử lý bên ngoài
+        output['annotated_image_path'] = str(image_path)  
     
     return output
 
