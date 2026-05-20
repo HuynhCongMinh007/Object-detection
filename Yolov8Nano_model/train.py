@@ -3,9 +3,7 @@ import shutil
 import argparse
 from ultralytics import YOLO
 
-# ==========================================
-# CẤU HÌNH CỐ ĐỊNH (Không thay đổi qua CLI)
-# ==========================================
+
 DATA_YAML = './data/data.yaml'
 MODEL_TYPE = 'yolov8n.pt'      
 IMG_SIZE = 640
@@ -39,10 +37,6 @@ def main(opt):
     
     print("[3/3] Huấn luyện hoàn tất!")
     
-    # ==========================================
-    # TỰ ĐỘNG COPY TRỌNG SỐ VÀO THƯ MỤC CHECKPOINTS
-    # ==========================================
-    # Lấy đường dẫn động từ chính mô hình
     run_dir = model.trainer.save_dir
     source_weight_path = os.path.join(run_dir, 'weights', 'best.pt')
     
@@ -56,9 +50,6 @@ def main(opt):
     else:
         print(f"❌ Lỗi: Không tìm thấy file trọng số tại {source_weight_path}")
 
-# ==========================================
-# KHỐI LỆNH KÍCH HOẠT (BẮT BUỘC NẰM SÁT LỀ TRÁI)
-# ==========================================
 if __name__ == '__main__':
     opt = parse_opt()
     main(opt)
