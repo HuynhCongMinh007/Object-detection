@@ -32,7 +32,7 @@ def main():
         split='test',     
         device='0',     
         plots=True       
-    
+    )
     print("\n>>> Đánh giá hoàn tất!")
     print(f">>> Bảng kết quả mAP và các biểu đồ chi tiết đã được lưu tại: {metrics.save_dir}")
 
