@@ -1,0 +1,34 @@
+# =========================================
+# 1. BỎ QUA MÔI TRƯỜNG VÀ RÁC HỆ THỐNG
+# =========================================
+venv/
+.venv/
+env/
+.pytest_cache/
+__pycache__/
+.DS_Store
+Thumbs.db
+
+# =========================================
+# 2. BỎ QUA DỮ LIỆU NẶNG (Dataset)
+# =========================================
+data/
+Animals-2/
+*.zip
+*.tar.gz
+
+# =========================================
+# 3. BỎ QUA THƯ MỤC TỰ SINH
+# =========================================
+runs/
+outputs/
+
+# =========================================
+# 4. QUẢN LÝ FILE TRỌNG SỐ (WEIGHTS)
+# =========================================
+# Chặn tất cả các file .pt và .pth ở bất kỳ đâu để tránh push nhầm
+*.pt
+*.pth
+
+# NGOẠI LỆ: Cho phép push duy nhất file trọng số xịn này lên GitHub
+!checkpoints/best.pt
