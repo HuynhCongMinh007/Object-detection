@@ -1,0 +1,21 @@
+{
+    "model_architecture": "Faster R-CNN ResNet50 FPN",
+    "num_classes": 7,
+    "class_names": [
+        "__background__",
+        "cat",
+        "chicken",
+        "cow",
+        "dog",
+        "horse",
+        "sheep"
+    ],
+    "learning_rate": 0.005,
+    "batch_size": 4,
+    "momentum": 0.9,
+    "weight_decay": 0.0005,
+    "early_stopping_patience": 2,
+    "lr_patience": 3,
+    "lr_factor": 0.5,
+    "device": "cuda"
+}
