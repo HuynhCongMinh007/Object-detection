@@ -252,11 +252,19 @@ CONFIDENCE_THRESHOLD = 0.5
 
 ### Step 2: Run Inference on Single Image
 
+Sử dụng `inference_runner.py` để chạy dự đoán trên một ảnh bất kỳ. File này cho phép truyền đường dẫn ảnh và model checkpoint thông qua command line arguments.
+
 ```bash
-python inference.py
+python inference_runner.py -i <path_to_image.jpg> -o <path_to_output_image.jpg> -m ./checkpoints/best_ssd.pth
 ```
 
-Or use programmatically:
+**Ví dụ:**
+
+```bash
+python inference_runner.py -i ./animal_dataset/test/cat.jpg -o ./cat_result.jpg
+```
+
+Hoặc sử dụng trong code Python với `inference.py`:
 
 ```python
 from inference import load_model, run_inference
@@ -274,7 +282,21 @@ for det in result['detections']:
     print(f"    Bbox: {det['bbox']}")
 ```
 
-### Step 3: Output Format
+### Step 3: Đánh giá mô hình (Evaluation)
+
+Để đánh giá toàn diện mô hình trên tập test, bao gồm các chỉ số mAP, Precision, Recall, F1-score và tạo các biểu đồ (Loss Curve, Confusion Matrix), sử dụng `evaluate_metrics.py`.
+
+```bash
+python evaluate_metrics.py
+```
+
+Sau khi chạy xong, các kết quả sẽ được lưu trong thư mục `outputs/`:
+
+- `outputs/evaluation_report.md`: Báo cáo chi tiết các độ đo.
+- `outputs/loss_curve.png`: Biểu đồ hàm loss trong quá trình huấn luyện.
+- `outputs/confusion_matrix.png`: Biểu đồ ma trận nhầm lẫn dự đoán và thực tế.
+
+### Step 4: Output Format
 
 Inference returns a clean dictionary:
 

@@ -25,7 +25,7 @@ import torchvision.transforms as transforms
 # ======================== CONFIGURATION ====================================
 # ============================================================================
 
-NUM_CLASSES = 8  # 6 animal classes + 1 background
+NUM_CLASSES = 8  # 6 animal classes + 1 background + 1 null
 CONFIDENCE_THRESHOLD = 0.9  # Only keep detections with score >= threshold
 
 MODEL_PATH = './checkpoints/best_ssd.pth'
