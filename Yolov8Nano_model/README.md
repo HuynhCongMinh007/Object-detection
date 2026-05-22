@@ -101,9 +101,37 @@ names: ['cat', 'chicken', 'cow', 'dog', 'horse', 'sheep']
 
 ---
 
+## 🌀 Offline Data Augmentation
+
+To programmatically augment the original dataset of 1,722 images (1,206 in training split) to a target of 4,000+ training images without relying on Roboflow's online augmentations, we use the custom script [dataset.py](file:///d:/Downloads/Object-detection/Yolov8Nano_model/dataset.py).
+
+### Augmentation Methods
+The script implements the following techniques using OpenCV and Numpy:
+1. **Horizontal Flip** (automatically updates bounding boxes and polygon coordinate arrays)
+2. **Brightness & Contrast Jittering** (random multipliers and additions)
+3. **Gaussian Blur** (simulates defocusing)
+4. **Gaussian Noise** (simulates camera sensor noise)
+5. **Random Shift & Scale** (translations up to 6% and zoom factors between 0.85-1.15; automatically filters out objects pushed off-screen)
+
+Supports both standard YOLO bounding boxes (`[xc, yc, w, h]`) and YOLO instance segmentation polygons (`[x1, y1, x2, y2, ...]`).
+
+### CLI Usage
+You can run the dataset augmentation script independently:
+```bash
+# Clean previous manual augmentations and generate up to 4,000 train images
+python dataset.py --clean --target-count 4000
+```
+This writes augmented images labeled with the `_manual_aug_` suffix in `data/train/images/` and `data/train/labels/`.
+
+---
+
 ## 🎓 Training
 
 ### Basic Training Command
+
+> [!NOTE]
+> [train.py](file:///d:/Downloads/Object-detection/Yolov8Nano_model/train.py) now automatically checks the number of training images. If it is less than 4,000, it automatically triggers [dataset.py](file:///d:/Downloads/Object-detection/Yolov8Nano_model/dataset.py) to perform offline augmentation before starting the training process.
+> It also auto-detects CUDA availability, falling back to CPU if no GPU is found, to prevent device compatibility crashes.
 
 ```bash
 
@@ -147,7 +175,7 @@ runs/train/yolov8_animals/
 
 ## 🔍 Inference & Validation
 
-### Inference Commands
+### Inference Commands (Sử dụng [inference.py](file:///d:/Downloads/Object-detection/Yolov8Nano_model/inference.py))
 
 **Single Image:**
 ```bash
@@ -171,7 +199,7 @@ python inference.py --source ./data/test/images/ --conf 0.5 --output ./results
 | `--conf` | float | `0.5` | Confidence threshold (0.0-1.0) |
 | `--output` | str | `./outputs` | Output directory for results |
 
-### Validation Command
+### Validation Command (Sử dụng [val.py](file:///d:/Downloads/Object-detection/Yolov8Nano_model/val.py))
 
 **Evaluate on Test Set:**
 ```bash
@@ -229,22 +257,24 @@ python inference.py --source ./data/test/images/ --conf 0.5
 
 📷 TỔNG QUAN:
    • Tổng số ảnh: 172
-   • Ảnh có phát hiện: 145 (84.3%)
-   • Ảnh không có phát hiện: 27
-   • Tổng số detections: 268
+   • Ảnh có phát hiện: 158 (91.9%)
+   • Ảnh không có phát hiện: 14
+   • Tổng số detections: 223
    • Confidence threshold: 0.5
 
 🐾 THỐNG KÊ THEO CLASS:
 Class           Count      Avg Conf     Min        Max       
 ----------------------------------------------------------------------
-cat             85         0.9234       0.5012     0.9912
-chicken         28         0.8756       0.5234     0.9567
-cow             32         0.9012       0.5678     0.9854
-dog             43         0.8145       0.5123     0.9456
-horse           32         0.8567       0.5345     0.9678
-sheep           44         0.7890       0.5012     0.9234
+cat             30         0.8153       0.6148     0.9595    
+chicken         47         0.8256       0.5369     0.9309    
+cow             54         0.7947       0.5064     0.9578    
+dog             39         0.8089       0.5259     0.9413    
+horse           28         0.8332       0.5530     0.9503    
+sheep           25         0.8195       0.6045     0.9516    
 ======================================================================
 ```
+
+> 📌 **Lưu ý về cột Count (Số lượng):** Cột `Count` thể hiện tổng số **cá thể/đối tượng** được mô hình phát hiện ra (không phải số lượng tệp ảnh). Vì một ảnh có thể chứa nhiều cá thể (ví dụ: một đàn gà gồm nhiều con, hoặc cả chó lẫn mèo), nên tổng số detections phát hiện được (223 detections) sẽ lớn hơn tổng số lượng tệp ảnh của tập test (172 ảnh).
 
 ### Output Structure
 
@@ -290,13 +320,23 @@ Adjust these in `train.py`:
 
 ### Accuracy (Test Set)
 
-Expected performance after 50 epochs:
-- **mAP@0.5:** 84.5%
-- **mAP@0.5:0.95** 57.3%
-- **Precision:** 88.7%
-- **Recall:** 74.6%
+Actual performance measured on the test set (`data/test`) using the checkpoint trained on our custom augmented dataset:
 
-*Results depend on dataset quality and augmentation*
+| Class | Precision (P) | Recall (R) | mAP@0.5 | mAP@0.5:0.95 |
+|---|---|---|---|---|
+| **All (Toàn bộ)** | **82.7%** | **78.5%** | **83.8%** | **57.6%** |
+| cat (mèo) | 84.5% | 68.4% | 73.5% | 49.0% |
+| chicken (gà) | 76.0% | 87.0% | 88.8% | 62.1% |
+| cow (bò) | 80.7% | 73.0% | 76.3% | 52.7% |
+| dog (chó) | 86.5% | 88.4% | 91.9% | 62.4% |
+| horse (ngựa) | 82.9% | 87.5% | 93.2% | 66.0% |
+| sheep (cừu) | 85.4% | 66.6% | 79.0% | 53.5% |
+
+- **Preprocess Speed:** 1.2 ms / image
+- **Inference Speed:** 73.4 ms / image (CPU)
+- **Postprocess Speed:** 0.9 ms / image
+
+*Results obtained by running `python val.py`*
 
 ---
 
@@ -320,14 +360,13 @@ python -c "from ultralytics import YOLO; m = YOLO('checkpoints/best.pt'); m.expo
 ```
 Yolov8Nano_model/
 ├── train.py                    # Training script
+├── dataset.py                  # Custom data augmentation script (NEW)
 ├── inference.py                # Inference with batch & visualization (UPDATED)
 ├── val.py                      # Validation script (NEW)
 ├── requirements.txt
 ├── yolov8n.pt                  # Pre-trained weights
 ├── checkpoints/
-│   ├── best.pt                 # Best performing model ⭐
-│   ├── best2.pt
-│   └── best3.pt
+│   └── best.pt                 # Best performing model ⭐
 ├── runs/
 │   └── detect/
 │       ├── train/              # Training logs & curves
