@@ -27,12 +27,14 @@ def main():
     print(f">>> Bắt đầu đánh giá mô hình trên tập TEST...")
     print(f">>> (Quá trình này sẽ đọc cả ảnh và file nhãn .txt để đối chiếu)\n")
     
+    import torch
+    device = '0' if torch.cuda.is_available() else 'cpu'
     metrics = model.val(
         data=DATA_YAML,
         split='test',     
-        device='0',     
+        device=device,     
         plots=True       
-    
+    )
     print("\n>>> Đánh giá hoàn tất!")
     print(f">>> Bảng kết quả mAP và các biểu đồ chi tiết đã được lưu tại: {metrics.save_dir}")
 

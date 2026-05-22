@@ -184,9 +184,13 @@ if __name__ == '__main__':
             image_paths = [source_path]
         elif source_path.is_dir():
             # Nếu là thư mục
-            image_paths = list(source_path.glob('*.jpg')) + list(source_path.glob('*.jpeg')) + \
-                         list(source_path.glob('*.png')) + list(source_path.glob('*.JPG'))
-            print(f">>> Tìm thấy {len(image_paths)} ảnh trong thư mục")
+            extensions = ['*.jpg', '*.jpeg', '*.png', '*.JPG', '*.JPEG', '*.PNG']
+            unique_paths = {}
+            for ext in extensions:
+                for p in source_path.glob(ext):
+                    unique_paths[p.name] = p
+            image_paths = list(unique_paths.values())
+            print(f">>> Tìm thấy {len(image_paths)} ảnh không trùng lặp trong thư mục")
         else:
             print(f"❌ Path không tồn tại: {source_path}")
             exit(1)
