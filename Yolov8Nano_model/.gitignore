@@ -21,14 +21,22 @@ Animals-2/
 # 3. BỎ QUA THƯ MỤC TỰ SINH
 # =========================================
 runs/
-outputs/
+
+# KHÔNG bỏ qua outputs nữa
+# outputs/
 
 # =========================================
 # 4. QUẢN LÝ FILE TRỌNG SỐ (WEIGHTS)
 # =========================================
-# Chặn tất cả các file .pt và .pth ở bất kỳ đâu để tránh push nhầm
+# Chặn tất cả các file .pt và .pth
 *.pt
 *.pth
 
-# NGOẠI LỆ: Cho phép push duy nhất file trọng số xịn này lên GitHub
+# NGOẠI LỆ: cho phép push best.pt
 !checkpoints/best.pt
+
+# =========================================
+# 5. GIỮ THƯ MỤC RỖNG
+# =========================================
+# Git không lưu folder rỗng nên tạo file .gitkeep
+outputs/.gitkeep
