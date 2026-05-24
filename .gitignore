@@ -1,8 +1,29 @@
 ssd_model/animal_dataset/
 ssd_model/dataset/
-ssd_model/.venv/
-# ssd_model/checkpoints/
 ssd_model/__pycache__/
 ssd_model/*.pth
 ssd_model/*.pt
 ssd_model/*.onnx
+# Khóa toàn bộ môi trường ảo venv ở thư mục gốc và TẤT CẢ các thư mục con
+.venv/
+venv/
+**/[Vv]env/
+**/.[Vv]env/
+
+# Khóa các thư mục cache của Python
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Khóa dữ liệu dataset nặng (đường dẫn cụ thể của bạn)
+ssd_model/animal_dataset/
+ssd_model/dataset/
+
+# Khóa tất cả các file trọng số mô hình và file xuất khẩu (bất kể nằm ở đâu)
+**/*.pth
+**/*.pt
+**/*.onnx
+
+# Khóa các file tạm thời của hệ thống hoặc IDE nếu có
+.DS_Store
+.vscode/

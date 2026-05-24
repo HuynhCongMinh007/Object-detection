@@ -1,0 +1,2 @@
+streamlit
+ultralytics>=8.0.0
