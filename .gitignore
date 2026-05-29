@@ -1,8 +1,6 @@
 ssd_model/animal_dataset/
 ssd_model/dataset/
 ssd_model/__pycache__/
-ssd_model/*.pth
-ssd_model/*.pt
 ssd_model/*.onnx
 # Khóa toàn bộ môi trường ảo venv ở thư mục gốc và TẤT CẢ các thư mục con
 .venv/
@@ -20,7 +18,6 @@ ssd_model/animal_dataset/
 ssd_model/dataset/
 
 # Khóa tất cả các file trọng số mô hình và file xuất khẩu (bất kể nằm ở đâu)
-**/*.pth
 **/*.pt
 **/*.onnx
 
